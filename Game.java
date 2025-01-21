@@ -98,6 +98,8 @@ public class Game
         System.out.println();
     }
 
+    /* test */
+
     /**
      * Given a command, process (that is: execute) the command.
      * @param command The command to be processed.
