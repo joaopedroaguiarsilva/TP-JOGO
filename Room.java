@@ -27,6 +27,7 @@ public class Room
     public Room(String description) 
     {
         this.description = description;
+        this.exits = new HashMap<>();
     }
 
     /**
