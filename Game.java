@@ -34,25 +34,49 @@ public class Game
      */
     private void createRooms()
     {
-        Room outside, theater, pub, lab, office;
+        Room mg05,anel,josecandido,trevo,br262,general,fatima,
+        estradaifmg,ifmg,centro;
       
-        // create the rooms
-        outside = new Room("outside the main entrance of the university");
-        theater = new Room("in a lecture theater");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
+        mg05 = new Room("na MG-05 rua da casa de Levindo");
+        anel = new Room("caiu no anel");
+        josecandido = new Room("está na José Cândido");
+        trevo = new Room("está no Trevo de Sabará");
+        br262 = new Room("entrou na BR 262");
+        general = new Room("está indo na direção de General Carneiro");
+        fatima = new Room("está indo para direção do bairro Fátima ");
+        estradaifmg = new Room("está na estrada que leva ao IFMG");
+        ifmg = new Room(" chegou ao IFMG");
+        centro = new Room("Meu deus está indo para o centro de Sabará");
+    
+        mg05.setExit("east", anel);
+        mg05.setExit("west", josecandido);
+        mg05.setExit("sout", trevo);
+
+        anel.setExit("west", mg05);
+
+        josecandido.setExit("east", mg05);
+
+        trevo.setExit("noth", mg05);
+        trevo.setExit("south", br262);
+
+        br262.setExit("south", fatima);
+        br262.setExit("north", general);
+        br262.setExit("east", trevo);
+        br262.setExit("west", estradaifmg);
         
-        // initialise room exits
-        outside.setExits(null, theater, lab, pub);
-        theater.setExits(null, null, null, outside);
-        pub.setExits(null, outside, null, null);
-        lab.setExits(outside, office, null, null);
-        office.setExits(null, null, null, lab);
+        fatima.setExit("north", br262);
+        
+        general.setExit("south", br262);
+        
+        estradaifmg.setExit("west", centro);
+        estradaifmg.setExit("east", br262);
+        estradaifmg.setExit("north", ifmg);
+        
+        centro.setExit("east", estradaifmg);
 
-        currentRoom = outside;  // start game outside
+        currentRoom = mg05;  // start game in MG 05
     }
-
+    
     /**
      *  Main play routine.  Loops until end of play.
      */
@@ -81,22 +105,10 @@ public class Game
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type 'help' if you need help.");
         System.out.println();
-        System.out.println("You are " + currentRoom.getDescription());
-        System.out.print("Exits: ");
-        if(currentRoom.northExit != null) {
-            System.out.print("north ");
-        }
-        if(currentRoom.eastExit != null) {
-            System.out.print("east ");
-        }
-        if(currentRoom.southExit != null) {
-            System.out.print("south ");
-        }
-        if(currentRoom.westExit != null) {
-            System.out.print("west ");
-        }
-        System.out.println();
+        printLocationInfo();
     }
+
+    /* test */
 
     /**
      * Given a command, process (that is: execute) the command.
@@ -121,6 +133,8 @@ public class Game
         }
         else if (commandWord.equals("quit")) {
             wantToQuit = quit(command);
+        } else if (commandWord.equals("look")) {
+            look();
         }
 
         return wantToQuit;
@@ -139,7 +153,7 @@ public class Game
         System.out.println("around at the university.");
         System.out.println();
         System.out.println("Your command words are:");
-        System.out.println("   go quit help");
+        System.out.println(parser.showCommands());
     }
 
     /** 
@@ -158,39 +172,14 @@ public class Game
 
         // Try to leave current room.
         Room nextRoom = null;
-        if(direction.equals("north")) {
-            nextRoom = currentRoom.northExit;
-        }
-        if(direction.equals("east")) {
-            nextRoom = currentRoom.eastExit;
-        }
-        if(direction.equals("south")) {
-            nextRoom = currentRoom.southExit;
-        }
-        if(direction.equals("west")) {
-            nextRoom = currentRoom.westExit;
-        }
+        nextRoom = currentRoom.getExit(direction);
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
         }
         else {
             currentRoom = nextRoom;
-            System.out.println("You are " + currentRoom.getDescription());
-            System.out.print("Exits: ");
-            if(currentRoom.northExit != null) {
-                System.out.print("north ");
-            }
-            if(currentRoom.eastExit != null) {
-                System.out.print("east ");
-            }
-            if(currentRoom.southExit != null) {
-                System.out.print("south ");
-            }
-            if(currentRoom.westExit != null) {
-                System.out.print("west ");
-            }
-            System.out.println();
+            printLocationInfo();
         }
     }
 
@@ -208,5 +197,14 @@ public class Game
         else {
             return true;  // signal that we want to quit
         }
+    }
+
+    private void printLocationInfo() {
+        System.out.println(currentRoom.getLongDescription());
+        System.out.println();
+    }
+
+    private void look() {
+        printLocationInfo();
     }
 }

@@ -1,3 +1,4 @@
+import java.util.*;
 /**
  * Class Room - a room in an adventure game.
  *
@@ -14,11 +15,8 @@
  */
 public class Room 
 {
-    public String description;
-    public Room northExit;
-    public Room southExit;
-    public Room eastExit;
-    public Room westExit;
+    private String description;
+    private HashMap<String, Room> exits;
 
     /**
      * Create a room described "description". Initially, it has
@@ -39,20 +37,24 @@ public class Room
      * @param south The south exit.
      * @param west The west exit.
      */
-    public void setExits(Room north, Room east, Room south, Room west) 
-    {
-        if(north != null) {
-            northExit = north;
-        }
-        if(east != null) {
-            eastExit = east;
-        }
-        if(south != null) {
-            southExit = south;
-        }
-        if(west != null) {
-            westExit = west;
-        }
+    // public void setExits(Room north, Room east, Room south, Room west) 
+    // {
+    //     if(north != null) {
+    //         northExit = north;
+    //     }
+    //     if(east != null) {
+    //         eastExit = east;
+    //     }
+    //     if(south != null) {
+    //         southExit = south;
+    //     }
+    //     if(west != null) {
+    //         westExit = west;
+    //     }
+    // }
+
+    public void setExit(String direction, Room exit) {
+        exits.put(direction, exit);
     }
 
     /**
@@ -62,5 +64,25 @@ public class Room
     {
         return description;
     }
+
+    public Room getExit(String exit) {
+        return exits.get(exit);
+    }
+
+    public String getExitString()
+    {
+        String exitString = "Exits:";
+        Set<String> keys = exits.keySet();
+        for (String exit : keys) {
+            exitString += " " + exit;
+        }
+        return exitString;
+    }
+
+    public String getLongDescription()
+    {
+	    return "You are " + description + ".\n" + getExitString();
+    }
+    
 
 }
