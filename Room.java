@@ -17,6 +17,7 @@ public class Room
 {
     private String description;
     private HashMap<String, Room> exits;
+    private ArrayList<Item> itens = new ArrayList<Item>();
 
     /**
      * Create a room described "description". Initially, it has
@@ -80,10 +81,31 @@ public class Room
         return exitString;
     }
 
+    public String getItemsString() {
+        String itemsString = "Itens: ";
+        for (Item item: itens) {
+            itemsString += item.getDescription() + " ";
+        }
+
+        return itemsString;
+    }
+
     public String getLongDescription()
     {
-	    return "You are " + description + ".\n" + getExitString();
+	    return "You are " + description + ".\n" + getExitString() + "\n" + getItemsString();
     }
-    
+
+    public void setItem(String description, double weight) {
+        itens.add(new Item(description, weight));
+    }
+
+    public boolean hasItem(String item) {
+        for (Item it : itens) {
+            if (it.getDescription().equals(item)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

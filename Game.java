@@ -19,6 +19,7 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
+    private int hydration;
         
     /**
      * Create the game and initialise its internal map.
@@ -27,6 +28,7 @@ public class Game
     {
         createRooms();
         parser = new Parser();
+        hydration = 3;
     }
 
     /**
@@ -55,6 +57,7 @@ public class Game
         anel.setExit("west", mg05);
 
         josecandido.setExit("east", mg05);
+        josecandido.setItem("bottle", 1.0);
 
         trevo.setExit("noth", mg05);
         trevo.setExit("south", br262);
@@ -130,11 +133,14 @@ public class Game
         }
         else if (commandWord.equals("go")) {
             goRoom(command);
+            hydration--;
         }
         else if (commandWord.equals("quit")) {
             wantToQuit = quit(command);
         } else if (commandWord.equals("look")) {
             look();
+        } else if (commandWord.equals("drink")) {
+            drink();
         }
 
         return wantToQuit;
@@ -206,5 +212,14 @@ public class Game
 
     private void look() {
         printLocationInfo();
+    }
+
+    private void drink() {
+        if (currentRoom.hasItem("bottle")) {
+            hydration = 5;
+            System.out.println("Você se hidratou ao máximo!");
+        } else {
+            System.out.println("Nenhuma garrafa encontrada.");
+        }
     }
 }
