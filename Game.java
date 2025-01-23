@@ -34,38 +34,49 @@ public class Game
      */
     private void createRooms()
     {
-        Room outside, theater, pub, lab, office;
+        Room mg05,anel,josecandido,trevo,br262,general,fatima,
+        estradaifmg,ifmg,centro;
       
-        // create the rooms
-        outside = new Room("outside the main entrance of the university");
-        theater = new Room("in a lecture theater");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
+        mg05 = new Room("na MG-05 rua da casa de Levindo");
+        anel = new Room("caiu no anel");
+        josecandido = new Room("está na José Cândido");
+        trevo = new Room("está no Trevo de Sabará");
+        br262 = new Room("entrou na BR 262");
+        general = new Room("está indo na direção de General Carneiro");
+        fatima = new Room("está indo para direção do bairro Fátima ");
+        estradaifmg = new Room("está na estrada que leva ao IFMG");
+        ifmg = new Room(" chegou ao IFMG");
+        centro = new Room("Meu deus está indo para o centro de Sabará");
+    
+        mg05.setExit("east", anel);
+        mg05.setExit("west", josecandido);
+        mg05.setExit("sout", trevo);
+
+        anel.setExit("west", mg05);
+
+        josecandido.setExit("east", mg05);
+
+        trevo.setExit("noth", mg05);
+        trevo.setExit("south", br262);
+
+        br262.setExit("south", fatima);
+        br262.setExit("north", general);
+        br262.setExit("east", trevo);
+        br262.setExit("west", estradaifmg);
         
-        // initialise room exits
-        //Room north, Room east, Room south, Room west
-        // outside.setExits(null, theater, lab, pub);
-        outside.setExit("east", theater);
-        outside.setExit("south", lab);
-        outside.setExit("west", pub);
+        fatima.setExit("north", br262);
+        
+        general.setExit("south", br262);
+        
+        estradaifmg.setExit("west", centro);
+        estradaifmg.setExit("east", br262);
+        estradaifmg.setExit("north", ifmg);
+        
+        centro.setExit("east", estradaifmg);
 
-        // theater.setExits(null, null, null, outside);
-        theater.setExit("west", outside);
-
-        // pub.setExits(null, outside, null, null);
-        pub.setExit("east", theater);
-
-        // lab.setExits(outside, office, null, null);
-        lab.setExit("north", outside);
-        lab.setExit("east", office);
-
-        // office.setExits(null, null, null, lab);
-        office.setExit("west", lab);
-
-        currentRoom = outside;  // start game outside
+        currentRoom = mg05;  // start game in MG 05
     }
-
+    
     /**
      *  Main play routine.  Loops until end of play.
      */
