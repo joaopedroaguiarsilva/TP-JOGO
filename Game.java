@@ -1,14 +1,16 @@
+import java.util.*;
+
 public class Game 
 {
     private Parser parser;
-    private Room currentRoom;
-    private int hydration;
+    private Stack<Room> pilha = new Stack<>();
+    private Player player;
         
     public Game() 
     {
-        createRooms();
         parser = new Parser();
-        hydration = 3;
+        player = new Player(null, 5);
+        createRooms();
     }
 
     private void createRooms()
@@ -54,7 +56,7 @@ public class Game
         
         centro.setExit("east", estradaifmg);
 
-        currentRoom = mg05;  // Jogo começa na MG 05
+        this.player.setCurrentRoom(mg05);  // Jogo começa na MG 05
     }
     
     public void play() 
@@ -94,7 +96,6 @@ public class Game
         }
         else if (commandWord.equals("go")) {
             goRoom(command);
-            hydration--;
         }
         else if (commandWord.equals("quit")) {
             wantToQuit = quit(command);
@@ -102,6 +103,14 @@ public class Game
             look();
         } else if (commandWord.equals("drink")) {
             drink();
+        } else if (commandWord.equals("back")) {
+            back(command);
+        }
+
+        System.out.println("Hidratação: " + this.player.getHydration());
+        if (this.player.getHydration() == 0) {
+            System.out.println("Você ficou desidratado! Não pode mais continuar.");
+            wantToQuit = true;
         }
 
         return wantToQuit;
@@ -127,14 +136,22 @@ public class Game
 
         String direction = command.getSecondWord();
 
-        Room nextRoom = null;
-        nextRoom = currentRoom.getExit(direction);
+        this.pilha.push(this.player.getCurrentRoom());
 
+        Room nextRoom = null;
+        nextRoom = this.player.getCurrentRoom().getExit(direction);
+
+        goNextRoom(nextRoom);
+    }
+
+    private void goNextRoom(Room nextRoom) {
         if (nextRoom == null) {
             System.out.println("There is no door!");
         }
         else {
-            currentRoom = nextRoom;
+            this.player.setCurrentRoom(nextRoom);
+            this.player.sweat();
+            
             printLocationInfo();
         }
     }
@@ -151,7 +168,7 @@ public class Game
     }
 
     private void printLocationInfo() {
-        System.out.println(currentRoom.getLongDescription());
+        System.out.println(this.player.getCurrentRoom().getLongDescription());
         System.out.println();
     }
 
@@ -160,11 +177,27 @@ public class Game
     }
 
     private void drink() {
-        if (currentRoom.hasItem("bottle")) {
-            hydration = 5;
+        if (this.player.getCurrentRoom().hasItem("bottle")) {
+            this.player.setHydration(5);
             System.out.println("Você se hidratou ao máximo!");
         } else {
             System.out.println("Nenhuma garrafa encontrada.");
         }
+    }
+
+    private void back(Command command) {
+        if(command.hasSecondWord()) {
+            System.out.println("Erro no comando.");
+            return;
+        }
+
+        if (this.pilha.empty()) {
+            System.out.println("Você está no início.");
+            return;
+        }
+
+        Room nextRoom = this.pilha.pop();
+
+        goNextRoom(nextRoom);
     }
 }
