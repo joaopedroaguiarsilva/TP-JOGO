@@ -1,29 +1,9 @@
-/**
- *  This class is the main class of the "World of Zuul" application. 
- *  "World of Zuul" is a very simple, text based adventure game.  Users 
- *  can walk around some scenery. That's all. It should really be extended 
- *  to make it more interesting!
- * 
- *  To play this game, create an instance of this class and call the "play"
- *  method.
- * 
- *  This main class creates and initialises all the others: it creates all
- *  rooms, creates the parser and starts the game.  It also evaluates and
- *  executes the commands that the parser returns.
- * 
- * @author  Michael Kölling and David J. Barnes
- * @version 2016.02.29
- */
-
 public class Game 
 {
     private Parser parser;
     private Room currentRoom;
     private int hydration;
         
-    /**
-     * Create the game and initialise its internal map.
-     */
     public Game() 
     {
         createRooms();
@@ -31,9 +11,6 @@ public class Game
         hydration = 3;
     }
 
-    /**
-     * Create all the rooms and link their exits together.
-     */
     private void createRooms()
     {
         Room mg05,anel,josecandido,trevo,br262,general,fatima,
@@ -52,14 +29,14 @@ public class Game
     
         mg05.setExit("east", anel);
         mg05.setExit("west", josecandido);
-        mg05.setExit("sout", trevo);
+        mg05.setExit("south", trevo);
 
         anel.setExit("west", mg05);
 
         josecandido.setExit("east", mg05);
         josecandido.setItem("bottle", 1.0);
 
-        trevo.setExit("noth", mg05);
+        trevo.setExit("north", mg05);
         trevo.setExit("south", br262);
 
         br262.setExit("south", fatima);
@@ -77,19 +54,13 @@ public class Game
         
         centro.setExit("east", estradaifmg);
 
-        currentRoom = mg05;  // start game in MG 05
+        currentRoom = mg05;  // Jogo começa na MG 05
     }
     
-    /**
-     *  Main play routine.  Loops until end of play.
-     */
     public void play() 
     {            
         printWelcome();
-
-        // Enter the main command loop.  Here we repeatedly read commands and
-        // execute them until the game is over.
-                
+        
         boolean finished = false;
         while (! finished) {
             Command command = parser.getCommand();
@@ -98,9 +69,6 @@ public class Game
         System.out.println("Thank you for playing.  Good bye.");
     }
 
-    /**
-     * Print out the opening message for the player.
-     */
     private void printWelcome()
     {
         System.out.println();
@@ -111,13 +79,6 @@ public class Game
         printLocationInfo();
     }
 
-    /* test */
-
-    /**
-     * Given a command, process (that is: execute) the command.
-     * @param command The command to be processed.
-     * @return true If the command ends the game, false otherwise.
-     */
     private boolean processCommand(Command command) 
     {
         boolean wantToQuit = false;
@@ -146,13 +107,7 @@ public class Game
         return wantToQuit;
     }
 
-    // implementations of user commands:
-
-    /**
-     * Print out some help information.
-     * Here we print some stupid, cryptic message and a list of the 
-     * command words.
-     */
+    
     private void printHelp() 
     {
         System.out.println("You are lost. You are alone. You wander");
@@ -162,21 +117,16 @@ public class Game
         System.out.println(parser.showCommands());
     }
 
-    /** 
-     * Try to go in one direction. If there is an exit, enter
-     * the new room, otherwise print an error message.
-     */
     private void goRoom(Command command) 
     {
         if(!command.hasSecondWord()) {
-            // if there is no second word, we don't know where to go...
+
             System.out.println("Go where?");
             return;
         }
 
         String direction = command.getSecondWord();
 
-        // Try to leave current room.
         Room nextRoom = null;
         nextRoom = currentRoom.getExit(direction);
 
@@ -189,11 +139,6 @@ public class Game
         }
     }
 
-    /** 
-     * "Quit" was entered. Check the rest of the command to see
-     * whether we really quit the game.
-     * @return true, if this command quits the game, false otherwise.
-     */
     private boolean quit(Command command) 
     {
         if(command.hasSecondWord()) {
@@ -201,7 +146,7 @@ public class Game
             return false;
         }
         else {
-            return true;  // signal that we want to quit
+            return true;  
         }
     }
 
