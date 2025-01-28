@@ -48,9 +48,14 @@ public class Room
         return exits.get(exit);
     }
 
+     /**
+    * Retorna uma descrição das saídas deste Room,
+    * por exemplo, "Exits: north west".
+    * @return Uma descrição das saídas disponíveis.
+    */
     public String getExitString()
     {
-        String exitString = "Exits:";
+        String exitString = "Sáidas:";
         Set<String> keys = exits.keySet();
         for (String exit : keys) {
             exitString += " " + exit;
@@ -60,6 +65,6 @@ public class Room
 
     public String getLongDescription()
     {
-	    return "You are " + description + ".\n" + getExitString();
+	    return "Você " + description + ".\n" + getExitString();
     }
 }

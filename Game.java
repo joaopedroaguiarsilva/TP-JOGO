@@ -14,16 +14,16 @@ public class Game
         Room mg05,anel,josecandido,trevo,br262,general,fatima,
         estradaifmg,ifmg,centro;
       
-        mg05 = new Room("na MG-05 rua da casa de Levindo");
+        mg05 = new Room("esá na MG-05 rua da casa de Levindo");
         anel = new Room("caiu no anel");
         josecandido = new Room("está na José Cândido");
         trevo = new Room("está no Trevo de Sabará");
-        br262 = new Room("entrou na BR 262");
+        br262 = new Room("está na BR 262");
         general = new Room("está indo na direção de General Carneiro");
-        fatima = new Room("está indo para direção do bairro Fátima ");
+        fatima = new Room("está indo em direção ao bairro Fátima ");
         estradaifmg = new Room("está na estrada que leva ao IFMG");
         ifmg = new Room(" chegou ao IFMG");
-        centro = new Room("Meu deus está indo para o centro de Sabará");
+        centro = new Room(", Meu deus está indo para o centro de Sabará");
     
         mg05.setExit("east", anel);
         mg05.setExit("west", josecandido);
@@ -69,9 +69,16 @@ public class Game
     private void printWelcome()
     {
         System.out.println();
-        System.out.println("Welcome to the World of Zuul!");
-        System.out.println("World of Zuul is a new, incredibly boring adventure game.");
-        System.out.println("Type 'help' if you need help.");
+        System.out.println("Bem vindo ao Augusto Levindo World");
+        System.out.println("Nesse jogo você deve mover nosso grande amigo Levindo pelo mapa em uma díficil missão.");
+        System.out.println("-------------------------------");
+        System.out.println("Levindo é um morador do Bairro Goiânia em BH e um estudante de inteligências artificiais no IFMG Sabará. Levindo sai de casa todos os dias às 6:00 da manhã para chegar a sua aula às 7:00. Mas Levindo precisa tomar muito cuidado para qual caminho irá seguir para chegar a sua faculdade, pois se ele pegar o caminho errado o tempo para ele chegar ao IF aumentará e assim ele pode acabar chegando atrasado para sua aula. O objetivo do jogo é dar as direções que Levindo deve seguir e prestar atenção ao tempo para que Levindo chegue a tempo para sua aula, caso ele chegue atrasado o chefão professor irá penaliza-lo com uma suspensão causando a sua derrota no jogo. Outro ponto importante é que Levindo carrega uma garrafinha da água e a cada movimento que ele faz perde um pouco do seu nível de água, você deve prestar atenção para que Levindo não se esqueça de beber água e acaba se desidratando assim perdendo o jogo. As direções que você pode utilizar em nosso mapa são (south, west, east, north).");
+        System.out.println("-------------------------------");
+        System.out.println("O relógio começa exatamente as 6:00 e a cada movimento realizado alguns minutos são adicionados ao relógio. Se precisar saber as horas digite 'relógio'.");
+        System.out.println("-------------------------------");
+        System.out.println("Seu nível de água começa em 100%, lembre-se de usar a sua garrafinha, pois a cada movimento seu nível de água diminui e se seu nível de água chegar ao 0% você está automaticamente derrotado. Digite 'água' para saber o seu nível de água.");
+        System.out.println("-------------------------------");
+        System.out.println("Caso precise de alguma ajuda digite 'help'.");
         System.out.println();
         printLocationInfo();
     }
@@ -81,7 +88,7 @@ public class Game
         boolean wantToQuit = false;
 
         if(command.isUnknown()) {
-            System.out.println("I don't know what you mean...");
+            System.out.println("Eu não sei o que você quer dizer");
             return false;
         }
 
@@ -104,10 +111,10 @@ public class Game
     
     private void printHelp() 
     {
-        System.out.println("You are lost. You are alone. You wander");
-        System.out.println("around at the university.");
+        System.out.println("Você está perdido em nosso jogo.");
+        System.out.println("Dentro do mapa.");
         System.out.println();
-        System.out.println("Your command words are:");
+        System.out.println("Os comandos que você pode utilizar são:");
         System.out.println(parser.showCommands());
     }
 
@@ -115,7 +122,7 @@ public class Game
     {
         if(!command.hasSecondWord()) {
 
-            System.out.println("Go where?");
+            System.out.println("Vai há onde?");
             return;
         }
 
@@ -125,7 +132,7 @@ public class Game
         nextRoom = currentRoom.getExit(direction);
 
         if (nextRoom == null) {
-            System.out.println("There is no door!");
+            System.out.println("Não há um caminho!");
         }
         else {
             currentRoom = nextRoom;
@@ -136,7 +143,7 @@ public class Game
     private boolean quit(Command command) 
     {
         if(command.hasSecondWord()) {
-            System.out.println("Quit what?");
+            System.out.println("Quit o que?");
             return false;
         }
         else {
