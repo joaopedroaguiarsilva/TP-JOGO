@@ -4,6 +4,7 @@ public class Room
 {
     private String description;
     private HashMap<String, Room> exits;
+    private ArrayList<Item> itens = new ArrayList<Item>();
 
     public Room(String description) 
     {
@@ -50,7 +51,7 @@ public class Room
 
     public String getExitString()
     {
-        String exitString = "Exits:";
+        String exitString = "Saídas:";
         Set<String> keys = exits.keySet();
         for (String exit : keys) {
             exitString += " " + exit;
@@ -58,8 +59,31 @@ public class Room
         return exitString;
     }
 
+    public String getItemsString() {
+        String itemsString = "Itens: ";
+        for (Item item: itens) {
+            itemsString += item.getDescription() + " ";
+        }
+
+        return itemsString;
+    }
+
     public String getLongDescription()
     {
-	    return "You are " + description + ".\n" + getExitString();
+	    return "Você " + description + ".\n" + getExitString() + "\n" + getItemsString();
     }
+
+    public void setItem(String description, double weight) {
+        itens.add(new Item(description, weight));
+    }
+
+    public boolean hasItem(String item) {
+        for (Item it : itens) {
+            if (it.getDescription().equals(item)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
