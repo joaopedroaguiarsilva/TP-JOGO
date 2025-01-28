@@ -11,6 +11,25 @@ public class Game
         parser = new Parser();
         player = new Player(null, 5, 10);
         createRooms();
+        createItens();
+    }
+
+    private void createItens()
+    {
+        Room.setItem("garrafinha", 5);
+
+        /*
+         
+          eu tenho dois itens uma garrafinha e um limpador de janela.
+        a garrafinha já vem junto com o jogador ent vc n pode take ela.
+        Ja o limpador de janela estará na MG05, porém para pegar o limpador de janela
+        levindo deve dropar a garrafinha porque ter os dois intens vai exceder o peso
+        máximo, mas para concluir o jogo ele precisa do limpador 
+        de janela pois no room estradaifmg começa a chover e se ele não usar o 
+        limpador de janela automaticamente ele chegará atrasado.
+          
+         
+         */
     }
 
     private void createRooms()
@@ -222,6 +241,10 @@ public class Game
         Room nextRoom = this.pilha.pop();
 
         goNextRoom(nextRoom);
+
+        private void take(){
+            return;
+        }
     }
 
     private void take(Command command)
