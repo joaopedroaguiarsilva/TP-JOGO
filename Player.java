@@ -42,10 +42,42 @@ public class Player {
         inventario.add(item);
         if((currentweight + item.getItemWeight()) > maxweight){
             System.out.println("Você não pode pegar esse item, porque vai exceder seu limite de peso.");
-        }
-        else{
+        } else {
             currentweight += item.getItemWeight();
         }
+    }
+
+    public boolean hasItem(String item) {
+        for (Item it : inventario) {
+            if (it.getDescription().equals(item)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void dropItem(Item item) {
+        int idx = 0;
+        for (Item it : inventario) {
+            if (it.getDescription().equals(item.getDescription())) {
+                inventario.remove(idx);
+                currentweight -= item.getItemWeight();
+            }
+            idx++;
+        }
+    }
+
+    public String getStringInventario() {
+        String itemsString = "Inventário: ";
+        for (Item item : inventario) {
+            itemsString += item.getDescription() + " ";
+        }
+
+        return itemsString;
+    }
+
+    public double getItemsTotalWeight() {
+        return currentweight;
     }
 
 }

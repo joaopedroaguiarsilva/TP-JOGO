@@ -16,8 +16,6 @@ public class Game
 
     private void createItens()
     {
-        Room.setItem("garrafinha", 5);
-
         /*
          
           eu tenho dois itens uma garrafinha e um limpador de janela.
@@ -37,14 +35,14 @@ public class Game
         Room mg05,anel,josecandido,trevo,br262,general,fatima,
         estradaifmg,ifmg,centro;
       
-        mg05 = new Room("na MG-05 rua da casa de Levindo. Temos uma garrafa no chão você pode usar o comando 'take' para pega-la.");
+        mg05 = new Room("na MG-05 rua da casa de Levindo. \n Temos uma garrafa no chão você pode usar o comando 'take' para pega-la.");
         anel = new Room("caiu no anel");
         josecandido = new Room("está na José Cândido");
         trevo = new Room("está no Trevo de Sabará");
         br262 = new Room("entrou na BR 262");
         general = new Room("está indo na direção de General Carneiro");
         fatima = new Room("está indo para direção do bairro Fátima ");
-        estradaifmg = new Room("está na estrada que leva ao IFMG. OMG, temos um problema começou uma forte chuva e seu carro não tem um limpador de janela. Sorte a nossa que podemos usar o comando 'take' para pegar esse limpador de janela que está logo ali no acostamento.");
+        estradaifmg = new Room("está na estrada que leva ao IFMG. OMG, temos um problema começou uma forte chuva e seu carro não tem um limpador de janela. \n Sorte a nossa que podemos usar o comando 'take' para pegar esse limpador de janela que está logo ali no acostamento.");
         ifmg = new Room(" chegou ao IFMG");
         centro = new Room("Meu deus está indo para o centro de Sabará");
     
@@ -78,8 +76,9 @@ public class Game
 
         
         //Criando os itens da sala
-        mg05.setItem("garrafinha", 5);
-        estradaifmg.setItem("limpador de janela", 9);
+        
+        mg05.setItem(new Item("garrafinha", 5));
+        estradaifmg.setItem(new Item("limpador de janela", 9));
 
         /*  
           eu tenho dois itens uma garrafinha e um limpador de janela.
@@ -149,6 +148,8 @@ public class Game
             take(command);
         } else if (commandWord.equals("drop")) {
             drop(command);
+        } else if (commandWord.equals("items")) {
+            items(command);
         }
 
         System.out.println("Hidratação: " + this.player.getHydration());
@@ -241,10 +242,6 @@ public class Game
         Room nextRoom = this.pilha.pop();
 
         goNextRoom(nextRoom);
-
-        private void take(){
-            return;
-        }
     }
 
     private void take(Command command)
@@ -270,10 +267,27 @@ public class Game
     private void drop(Command command)
     {
         if(!command.hasSecondWord()) {
-
-            System.out.println("Qual item vai pegar?");
+            System.out.println("Qual item vai jogar fora?");
             return;
         }
         String objeto = command.getSecondWord();
+
+        if(this.player.hasItem(objeto)) {
+            Item itemAnalisado = this.player.getCurrentRoom().getItemByDescription(objeto);
+
+            this.player.dropItem(itemAnalisado);
+            System.out.println("Você jogou fora com suceso.");
+        } else {
+            System.out.println("Você não possui esse item.");
+        }
+    }
+
+    private void items(Command command) {
+        if(command.hasSecondWord()) {
+            System.out.println("Erro no comando.");
+            return;
+        }
+
+        System.out.println(this.player.getStringInventario() + "\n" + this.player.getItemsTotalWeight());
     }
 }
