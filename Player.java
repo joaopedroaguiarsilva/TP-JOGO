@@ -1,14 +1,16 @@
 public class Player {
     private Room currentRoom;
     private int hydration;
+    private double maxweight;
 
     /**
      * Create the game and initialise its internal map.
      */
-    public Player(Room currentRoom, int hydration) 
+    public Player(Room currentRoom, int hydration, double maxweight) 
     {
         this.currentRoom = currentRoom;
         this.hydration = hydration;
+        this.maxweight = maxweight;
     }
 
     public Room getCurrentRoom() {

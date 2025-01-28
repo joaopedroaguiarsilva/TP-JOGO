@@ -14,4 +14,11 @@ public class Item {
     public String getDescription() {
         return this.description;
     }
+
+    /*public void createItem()
+    {
+
+    } */
+
 }
+

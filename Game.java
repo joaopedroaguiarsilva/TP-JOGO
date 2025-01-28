@@ -9,8 +9,27 @@ public class Game
     public Game() 
     {
         parser = new Parser();
-        player = new Player(null, 5);
+        player = new Player(null, 5, 10);
         createRooms();
+        createItens();
+    }
+
+    private void createItens()
+    {
+        Room.setItem("garrafinha", 5);
+
+        /*
+         
+          eu tenho dois itens uma garrafinha e um limpador de janela.
+        a garrafinha já vem junto com o jogador ent vc n pode take ela.
+        Ja o limpador de janela estará na MG05, porém para pegar o limpador de janela
+        levindo deve dropar a garrafinha porque ter os dois intens vai exceder o peso
+        máximo, mas para concluir o jogo ele precisa do limpador 
+        de janela pois no room estradaifmg começa a chover e se ele não usar o 
+        limpador de janela automaticamente ele chegará atrasado.
+          
+         
+         */
     }
 
     private void createRooms()
@@ -112,6 +131,10 @@ public class Game
             drink();
         } else if (commandWord.equals("back")) {
             back(command);
+        } else if (commandWord.equals("take")) {
+            take();
+        } else if (commandWord.equals("drop")) {
+            drop();
         }
 
         System.out.println("Hidratação: " + this.player.getHydration());
@@ -184,7 +207,7 @@ public class Game
     }
 
     private void drink() {
-        if (this.player.getCurrentRoom().hasItem("bottle")) {
+        if (this.player.getCurrentRoom().hasItem("garrafinha")) {
             this.player.setHydration(5);
             System.out.println("Você se hidratou ao máximo!");
         } else {
@@ -206,5 +229,9 @@ public class Game
         Room nextRoom = this.pilha.pop();
 
         goNextRoom(nextRoom);
+
+        private void take(){
+            return;
+        }
     }
 }
