@@ -9,7 +9,7 @@ public class Game
     public Game() 
     {
         parser = new Parser();
-        player = new Player(null, 5);
+        player = new Player(null, 5, 10);
         createRooms();
     }
 
@@ -18,14 +18,14 @@ public class Game
         Room mg05,anel,josecandido,trevo,br262,general,fatima,
         estradaifmg,ifmg,centro;
       
-        mg05 = new Room("na MG-05 rua da casa de Levindo");
+        mg05 = new Room("na MG-05 rua da casa de Levindo. Temos uma garrafa no chão você pode usar o comando 'take' para pega-la.");
         anel = new Room("caiu no anel");
         josecandido = new Room("está na José Cândido");
         trevo = new Room("está no Trevo de Sabará");
         br262 = new Room("entrou na BR 262");
         general = new Room("está indo na direção de General Carneiro");
         fatima = new Room("está indo para direção do bairro Fátima ");
-        estradaifmg = new Room("está na estrada que leva ao IFMG");
+        estradaifmg = new Room("está na estrada que leva ao IFMG. OMG, temos um problema começou uma forte chuva e seu carro não tem um limpador de janela. Sorte a nossa que podemos usar o comando 'take' para pegar esse limpador de janela que está logo ali no acostamento.");
         ifmg = new Room(" chegou ao IFMG");
         centro = new Room("Meu deus está indo para o centro de Sabará");
     
@@ -36,7 +36,6 @@ public class Game
         anel.setExit("west", mg05);
 
         josecandido.setExit("east", mg05);
-        josecandido.setItem("bottle", 1.0);
 
         trevo.setExit("north", mg05);
         trevo.setExit("south", br262);
@@ -57,8 +56,23 @@ public class Game
         centro.setExit("east", estradaifmg);
 
         this.player.setCurrentRoom(mg05);  // Jogo começa na MG 05
+
+        
+        //Criando os itens da sala
+        mg05.setItem("garrafinha", 5);
+        estradaifmg.setItem("limpador de janela", 9);
+
+        /*  
+          eu tenho dois itens uma garrafinha e um limpador de janela.
+        a garrafinha já vem junto com o jogador ent vc n pode take ela.
+        Ja o limpador de janela estará na MG05, porém para pegar o limpador de janela
+        levindo deve dropar a garrafinha porque ter os dois intens vai exceder o peso
+        máximo, mas para concluir o jogo ele precisa do limpador 
+        de janela pois no room estradaifmg começa a chover e se ele não usar o 
+        limpador de janela automaticamente ele chegará atrasado.
+         */
     }
-    
+
     public void play() 
     {            
         printWelcome();
@@ -68,15 +82,22 @@ public class Game
             Command command = parser.getCommand();
             finished = processCommand(command);
         }
-        System.out.println("Thank you for playing.  Good bye.");
+        System.out.println("Obrigado por jogar! Até.");
     }
 
     private void printWelcome()
     {
         System.out.println();
-        System.out.println("Welcome to the World of Zuul!");
-        System.out.println("World of Zuul is a new, incredibly boring adventure game.");
-        System.out.println("Type 'help' if you need help.");
+        System.out.println("Bem vindo ao Augusto Levindo World");
+        System.out.println("Nesse jogo você deve mover nosso grande amigo Levindo \n pelo mapa em uma díficil missão.");
+        System.out.println("-------------------------------");
+        System.out.println("Levindo é um morador do Bairro Goiânia em BH e um estudante \n de inteligências artificiais no IFMG Sabará. Levindo sai de casa todos os dias às 6:00 da manhã para chegar \n a sua aula às 7:00. Mas Levindo precisa tomar muito cuidado para qual caminho irá seguir para chegar a sua faculdade, pois se ele pegar o caminho errado o tempo para ele chegar ao IF aumentará e assim ele pode acabar \n chegando atrasado para sua aula. O objetivo do jogo é dar as direções que Levindo deve seguir e prestar atenção ao tempo para que Levindo chegue \n a tempo para sua aula, caso ele chegue atrasado o chefão professor irá penaliza-lo com uma suspensão causando a sua derrota no jogo. \n Outro ponto importante é que Levindo carrega uma garrafinha de água e a cada movimento que ele faz perde um pouco do seu nível de água, você deve prestar atenção para que Levindo não se esqueça de beber água e acaba se \n desidratando assim perdendo o jogo. As direções que você pode utilizar em nosso mapa são (south, west, east, north).");
+        System.out.println("-------------------------------");
+        System.out.println("O relógio começa exatamente as 6:00 e a cada movimento realizado \n alguns minutos são adicionados ao relógio. Se precisar saber as horas digite 'relógio'.");
+        System.out.println("-------------------------------");
+        System.out.println("Seu nível de água começa em 100%, lembre-se de usar a sua \n garrafinha, pois a cada movimento seu nível de água diminui e se seu nível de água chegar \n ao 0% você está automaticamente derrotado. Digite 'água' para saber o seu nível de água.");
+        System.out.println("-------------------------------");
+        System.out.println("Caso precise de alguma ajuda digite 'help'.");
         System.out.println();
         printLocationInfo();
     }
@@ -86,7 +107,7 @@ public class Game
         boolean wantToQuit = false;
 
         if(command.isUnknown()) {
-            System.out.println("I don't know what you mean...");
+            System.out.println("Eu não sei o que você quer dizer");
             return false;
         }
 
@@ -105,6 +126,10 @@ public class Game
             drink();
         } else if (commandWord.equals("back")) {
             back(command);
+        } else if (commandWord.equals("take")) {
+            take(command);
+        } else if (commandWord.equals("drop")) {
+            drop(command);
         }
 
         System.out.println("Hidratação: " + this.player.getHydration());
@@ -112,17 +137,15 @@ public class Game
             System.out.println("Você ficou desidratado! Não pode mais continuar.");
             wantToQuit = true;
         }
-
         return wantToQuit;
     }
 
-    
     private void printHelp() 
     {
-        System.out.println("You are lost. You are alone. You wander");
-        System.out.println("around at the university.");
+        System.out.println("Você está perdido em nosso jogo.");
+        System.out.println("Dentro do mapa.");
         System.out.println();
-        System.out.println("Your command words are:");
+        System.out.println("Os comandos que você pode utilizar são::");
         System.out.println(parser.showCommands());
     }
 
@@ -130,7 +153,7 @@ public class Game
     {
         if(!command.hasSecondWord()) {
 
-            System.out.println("Go where?");
+            System.out.println("Vai há onde?");
             return;
         }
 
@@ -146,7 +169,7 @@ public class Game
 
     private void goNextRoom(Room nextRoom) {
         if (nextRoom == null) {
-            System.out.println("There is no door!");
+            System.out.println("Não há um caminho!");
         }
         else {
             this.player.setCurrentRoom(nextRoom);
@@ -159,7 +182,7 @@ public class Game
     private boolean quit(Command command) 
     {
         if(command.hasSecondWord()) {
-            System.out.println("Quit what?");
+            System.out.println("Quit o que?");
             return false;
         }
         else {
@@ -177,7 +200,7 @@ public class Game
     }
 
     private void drink() {
-        if (this.player.getCurrentRoom().hasItem("bottle")) {
+        if (this.player.getCurrentRoom().hasItem("garrafinha")) {
             this.player.setHydration(5);
             System.out.println("Você se hidratou ao máximo!");
         } else {
@@ -199,5 +222,35 @@ public class Game
         Room nextRoom = this.pilha.pop();
 
         goNextRoom(nextRoom);
+    }
+
+    private void take(Command command)
+        {
+            if(!command.hasSecondWord()) {
+
+                System.out.println("Qual item vai pegar?");
+                return;
+            }
+            String objeto = command.getSecondWord();
+            if(this.player.getCurrentRoom().hasItem(objeto))
+            {
+                Item itemAnalisado;
+                itemAnalisado = this.player.getCurrentRoom().getItemByDescription(objeto);
+
+                this.player.takeToInventory(itemAnalisado);
+            }
+            else{
+                System.out.println("Nessa estrada não tem itens para você pegar!");
+            }
+        }
+    
+    private void drop(Command command)
+    {
+        if(!command.hasSecondWord()) {
+
+            System.out.println("Qual item vai pegar?");
+            return;
+        }
+        String objeto = command.getSecondWord();
     }
 }

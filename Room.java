@@ -51,7 +51,7 @@ public class Room
 
     public String getExitString()
     {
-        String exitString = "Exits:";
+        String exitString = "Saídas:";
         Set<String> keys = exits.keySet();
         for (String exit : keys) {
             exitString += " " + exit;
@@ -70,7 +70,7 @@ public class Room
 
     public String getLongDescription()
     {
-	    return "You are " + description + ".\n" + getExitString() + "\n" + getItemsString();
+	    return "Você " + description + ".\n" + getExitString() + "\n" + getItemsString();
     }
 
     public void setItem(String description, double weight) {
@@ -84,6 +84,15 @@ public class Room
             }
         }
         return false;
+    }
+
+    public Item getItemByDescription(String description){
+        for (Item it : itens) {
+            if (it.getDescription().equals(description)) {
+                return it;
+            }
+        }
+        return null;
     }
 
 }

@@ -14,4 +14,10 @@ public class Item {
     public String getDescription() {
         return this.description;
     }
+
+    public Double getItemWeight()
+    {
+        return this.weight;
+    } 
+
 }
