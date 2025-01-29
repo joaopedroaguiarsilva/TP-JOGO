@@ -79,6 +79,7 @@ public class Game
         
         mg05.setItem(new Item("garrafinha", 5));
         estradaifmg.setItem(new Item("limpador de janela", 9));
+        josecandido.setItem(new Item("bomba", 1));
 
         /*  
           eu tenho dois itens uma garrafinha e um limpador de janela.
@@ -150,6 +151,8 @@ public class Game
             drop(command);
         } else if (commandWord.equals("items")) {
             items(command);
+        } else if (commandWord.equals("tomarBomba")) {
+            tomarBomba(command);
         }
 
         System.out.println("Hidratação: " + this.player.getHydration());
@@ -220,11 +223,11 @@ public class Game
     }
 
     private void drink() {
-        if (this.player.getCurrentRoom().hasItem("garrafinha")) {
+        if (this.player.hasItem("garrafinha")) {
             this.player.setHydration(5);
             System.out.println("Você se hidratou ao máximo!");
         } else {
-            System.out.println("Nenhuma garrafa encontrada.");
+            System.out.println("Nenhuma garrafa no inventário.");
         }
     }
 
@@ -289,5 +292,22 @@ public class Game
         }
 
         System.out.println(this.player.getStringInventario() + "\n" + this.player.getItemsTotalWeight());
+    }
+
+    private void tomarBomba(Command command) {
+        if(command.hasSecondWord()) {
+            System.out.println("Erro no comando.");
+            return;
+        }
+
+        if (this.player.hasItem("bomba")) {
+            Item itemAnalisado = this.player.getCurrentRoom().getItemByDescription("bomba");
+            
+            System.out.println("Você ganhou mais 10 de capacidade de peso no inventário.");
+            this.player.setMaxWeight(10);
+            this.player.dropItem(itemAnalisado);
+        } else {
+            System.out.println("Nenhuma bomba no inventário.");
+        }
     }
 }

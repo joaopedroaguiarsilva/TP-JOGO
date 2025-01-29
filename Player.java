@@ -80,4 +80,8 @@ public class Player {
         return currentweight;
     }
 
+    public void setMaxWeight(double peso) {
+        this.maxweight += peso;
+    }
+
 }
