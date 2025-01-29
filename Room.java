@@ -60,7 +60,7 @@ public class Room
     }
 
     public String getItemsString() {
-        String itemsString = "Itens: ";
+        String itemsString = "Itens dessa estrada: ";
         for (Item item: itens) {
             itemsString += item.getDescription() + " ";
         }
@@ -73,8 +73,8 @@ public class Room
 	    return "Você " + description + ".\n" + getExitString() + "\n" + getItemsString();
     }
 
-    public void setItem(String description, double weight) {
-        itens.add(new Item(description, weight));
+    public void setItem(Item item) {
+        itens.add(item);
     }
 
     public boolean hasItem(String item) {
