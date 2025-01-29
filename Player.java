@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.*;
 
 public class Player {
     private Room currentRoom;
@@ -57,13 +57,14 @@ public class Player {
     }
 
     public void dropItem(Item item) {
-        int idx = 0;
-        for (Item it : inventario) {
+        Iterator<Item> iterator = inventario.iterator();
+        while (iterator.hasNext()) {
+            Item it = iterator.next();
             if (it.getDescription().equals(item.getDescription())) {
-                inventario.remove(idx);
+                iterator.remove();
                 currentweight -= item.getItemWeight();
+                break;
             }
-            idx++;
         }
     }
 

@@ -11,7 +11,7 @@ public class Game
     {
         parser = new Parser();
         player = new Player(null, 5, 10);
-        tempo = new Tempo(360, 360, 720);
+        tempo = new Tempo(360, 360, 420);
         createRooms();
     }
 
