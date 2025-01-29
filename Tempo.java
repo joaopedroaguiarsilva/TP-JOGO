@@ -20,6 +20,11 @@ public class Tempo {
         {
             System.out.println("São "+ horas+ " horas e 0"+minutos+ " minutos");
         }
+        else if(minutos >= 60)
+        {
+            minutos = 0;
+            System.out.println("São "+ horas+ " horas e 0"+minutos+ " minutos");
+        }
         else{
             System.out.println("São "+ horas+ " horas e "+minutos+ " minutos");
         }
